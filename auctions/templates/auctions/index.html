@@ -9,10 +9,10 @@
     <form action="{% url 'cdisplay' %}" method="post" class="flex gap-3 items-center">
         {% csrf_token %}
         <select name="catagory"
-                class="border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-black text-sm">
-            <option value="">All Categories</option>
+                class="border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-black text-sm
+                       dark:bg-gray-800 dark:text-white dark:border-gray-600">
             {% for c in catagory %}
-                <option value="{{ c }}">{{ c }}</option>
+                <option value="{{ c }}" class="dark:bg-gray-800 dark:text-white">{{ c }}</option>
             {% endfor %}
         </select>
         <button type="submit"
@@ -22,10 +22,14 @@
     </form>
 </div>
 
-<!-- Listings Flex Grid -->
+{% if not query %}
+    <p class="text-center text-gray-500 mb-6">No active listings found.</p>
+{% endif %}
+
+<!-- Listings Grid -->
 <div class="flex flex-wrap justify-center gap-6 px-4">
     {% for listings in query %}
-        <div class="bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col w-60">
+        <div class="bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col w-60 h-80">
             
             <!-- Image -->
             {% if listings.image_url %}
@@ -43,10 +47,10 @@
                     <h3 class="text-sm font-semibold truncate mb-1">{{ listings.title }}</h3>
                     <p class="text-xs text-gray-700 truncate mb-2">{{ listings.description }}</p>
                 </div>
-                <div class="mt-2 flex justify-between items-center">
+                <div class="mt-2 flex justify-center items-center">
                     <span class="text-sm font-medium text-gray-800">Price: ${{ listings.starting_bid.placed_bid }}</span>
                     <a href="{% url 'display' listings.id %}"
-                       class="text-sm bg-black text-white px-3 py-1 rounded hover:bg-gray-800 transition">
+                       class="text-sm bg-black text-white px-3 py-1 rounded hover:bg-gray-800 transition ml-2">
                         View
                     </a>
                 </div>

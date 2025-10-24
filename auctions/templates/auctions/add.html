@@ -2,51 +2,66 @@
 {% block title %}Create Listing{% endblock %}
 {% block body %}
 
+<!-- Header Message Card -->
+<div class="max-w-4xl mx-auto mb-6 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md text-center text-gray-800 dark:text-gray-100">
+  🚀 Ready to list your item? Fill in the details below.
+</div>
+
+<!-- Info / Success Message -->
 {% if message %}
-  <div class="bg-gray-100 border-l-4 border-black text-gray-700 p-4 mb-4 rounded">
+  <div class="max-w-4xl mx-auto mb-6 p-4 bg-green-50 dark:bg-green-900 border-l-4 border-green-600 dark:border-green-400 rounded-xl text-green-800 dark:text-green-200 shadow">
     {{ message }}
   </div>
 {% endif %}
 
-<h2 class="text-2xl font-semibold mb-6">Create New Listing</h2>
+<!-- Form Card -->
+<div class="max-w-lg mx-auto bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md transition-colors duration-300">
+  <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800 dark:text-gray-100">Create New Listing</h2>
 
-<form action="{% url 'add' %}" method="post" class="space-y-4 max-w-md">
-  {% csrf_token %}
+  <form action="{% url 'add' %}" method="post" class="space-y-4">
+    {% csrf_token %}
 
-  <div>
-    <label class="block font-medium mb-1">Title</label>
-    <input type="text" name="title" required placeholder="Enter title"
-      class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-black" />
-  </div>
+    <div>
+      <label class="block font-medium mb-1 text-gray-700 dark:text-gray-200">Title</label>
+      <input type="text" name="title" required placeholder="Enter title"
+        class="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-black dark:focus:ring-white bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors duration-300" />
+    </div>
 
-  <div>
-    <label class="block font-medium mb-1">Description</label>
-    <input type="text" name="description" required placeholder="Enter description"
-      class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-black" />
-  </div>
+    <div>
+      <label class="block font-medium mb-1 text-gray-700 dark:text-gray-200">Description</label>
+      <textarea name="description" required placeholder="Enter description"
+        class="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-black dark:focus:ring-white bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors duration-300 resize-none h-24"></textarea>
+    </div>
 
-  <div>
-    <label class="block font-medium mb-1">Starting Bid</label>
-    <input type="number" name="starting_bid" required placeholder="Starting bid"
-      class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-black" />
-  </div>
+    <div>
+      <label class="block font-medium mb-1 text-gray-700 dark:text-gray-200">Starting Bid ($)</label>
+      <input type="number" name="starting_bid" required placeholder="Starting bid"
+        class="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-black dark:focus:ring-white bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors duration-300" />
+    </div>
 
-  <div>
-    <label class="block font-medium mb-1">Image URL</label>
-    <input type="url" name="image_url" placeholder="https://example.com/image.jpg"
-      class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-black" />
-  </div>
+    <div>
+      <label class="block font-medium mb-1 text-gray-700 dark:text-gray-200">Image URL</label>
+      <input type="url" name="image_url" placeholder="https://example.com/image.jpg"
+        class="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-black dark:focus:ring-white bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors duration-300" />
+    </div>
 
-  <div>
-    <label class="block font-medium mb-1">Select Category</label>
-    <select name="cat" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-black">
-      {% for c in catagory %}
-        <option value="{{ c }}">{{ c }}</option>
-      {% endfor %}
-    </select>
-  </div>
+    <div>
+      <label class="block font-medium mb-1 text-gray-700 dark:text-gray-200">Select Category</label>
+      <select name="cat" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-black dark:focus:ring-white bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+        {% for c in catagory %}
+          <option value="{{ c }}">{{ c }}</option>
+        {% endfor %}
+      </select>
+    </div>
 
-  <input type="submit" value="Submit"
-    class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition" />
-</form>
+    <input type="submit" value="Submit"
+      class="w-full bg-black dark:bg-gray-100 dark:text-black text-white font-medium py-2 rounded-lg hover:opacity-90 transition duration-300 cursor-pointer" />
+  </form>
+</div>
+
+<!-- Footer Message Card -->
+<div class="max-w-4xl mx-auto mt-6 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md text-center text-gray-800 dark:text-gray-100">
+  💡 Tip: Add clear images and detailed descriptions to attract more buyers.
+</div>
+
 {% endblock %}

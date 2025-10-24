@@ -165,21 +165,27 @@ def close_bid(request, list_id):
 
 
 
+from django.contrib import messages  # import messages at the top
 
 def login_request(request):
     if request.method == "POST":
-        Username = request.POST.get("username")
-        Password = request.POST.get("password")
-        user = authenticate(request, username=Username, password=Password)
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
+            messages.success(request, f"Welcome back, {user.username}!")  # success message
+            return HttpResponseRedirect(reverse('index'))  # redirect to index
+        else:
+            messages.error(request, "Invalid username or password. Please try again.")  # error message
+            return render(request, "auctions/login.html")
+    
     return render(request, "auctions/login.html")
-
-        
-
 
 def logout_request(request):
     logout(request)
-    return render(request,"auctions/login.html",{"message":"LOGGED_OUT"})
+    messages.success(request, "You have successfully logged out.")  # logout message
+    return HttpResponseRedirect(reverse('login'))  # redirect to login page
 
 

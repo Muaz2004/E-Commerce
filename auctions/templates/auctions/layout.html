@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}listings{% endblock %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}E-Commerce{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<h1>Auctions</h1>
-<div>
-    {% if user.is_authenticated %}
-    Signed in as <strong>{{ user.username }}</strong>
-    {% else %}
-    Not signed in
-    {% endif %}
-</div>
-<ul class="nav">
-    <li class="nav-item"><a href="{% url 'index' %}" class="nav-link">Active Listings</a></li>
+<body class="bg-white text-black min-h-screen flex flex-col font-sans">
 
-    {% if user.is_authenticated %}
-    <li class="nav-item"><a href="{% url 'add' %}" class="nav-link">Create New Listing</a></li>
-    <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>,
-    <li class="nav-item"><a href="{% url 'wdisplay' %}" class="nav-link">watchlist</a></li>
-    {% else %}
-    <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
-    {% endif %}
-</ul>
-<div>
-    <hr>
-    {% block body %}
-    {% endblock %}
-</div>
+  <!-- Navbar -->
+  <nav class="bg-black text-white">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <h1 class="text-2xl font-semibold">🛍️ Auctions</h1>
+      <ul class="flex space-x-6 text-sm">
+        <li><a href="{% url 'index' %}" class="hover:text-gray-300">Active Listings</a></li>
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'add' %}" class="hover:text-gray-300">Create Listing</a></li>
+          <li><a href="{% url 'wdisplay' %}" class="hover:text-gray-300">Watchlist</a></li>
+          <li><a href="{% url 'logout' %}" class="hover:text-gray-300">Logout</a></li>
+          <li class="text-gray-400">Hi, {{ user.username }}</li>
+        {% else %}
+          <li><a href="{% url 'login' %}" class="hover:text-gray-300">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <main class="flex-1 container mx-auto p-6">
+    {% block body %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-black text-white text-center py-4 mt-auto">
+    <p class="text-sm">&copy; {{ now|date:"Y" }} Muaz Auctions. All rights reserved.</p>
+  </footer>
 </body>
 </html>

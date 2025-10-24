@@ -1,39 +1,53 @@
 {% extends "auctions/layout.html" %}
-
-{% block title %}{% endblock %}
-
+{% block title %}My Watchlist{% endblock %}
 {% block body %}
-{% if message %}
-    <p>{{ message }}</p>
+
+<h2 class="text-3xl font-bold mb-6 text-center">My Watchlist</h2>
+
+{% if not query %}
+    <p class="text-center text-gray-500 mb-6">Your watchlist is empty.</p>
 {% endif %}
-<h2>watchlists</h2>
-     
-    
-    
-    <div class="row" style="margin: 30px;">
-    
-    {% for listings in query%}
-    
-    <div class="card" style="width: 18rem;">
 
-        {% if listings.image_url %}<img src="{{ listings.image_url }}" alt="image" style="padding: 50px;">{% endif %}
-
-        <div class="card-body" style="padding: 50px;">
-            <h5>{{listings.title}}</h5>
-            <p>{{listings.description}}</p>
-            <a href="{% url 'display' listings.id %}">view detail</a>
-    
+<!-- Watchlist Grid -->
+<div class="flex flex-wrap justify-center gap-6 px-4">
+    {% for listings in query %}
+        <div class="bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col w-60">
+            
+            <!-- Image -->
+            {% if listings.image_url %}
+                <img src="{{ listings.image_url }}" alt="{{ listings.title }}"
+                     class="w-full h-36 object-cover">
+            {% else %}
+                <div class="w-full h-36 bg-gray-200 flex items-center justify-center text-gray-500">
+                    No Image
                 </div>
-             
-          </div>
-     
+            {% endif %}
+            
+            <!-- Card Content -->
+            <div class="p-4 flex flex-col flex-1 justify-between">
+                <div>
+                    <h3 class="text-sm font-semibold truncate mb-1">{{ listings.title }}</h3>
+                    <p class="text-xs text-gray-700 truncate mb-2">{{ listings.description }}</p>
+                </div>
+                <div class="mt-2 flex justify-between items-center">
+                    <span class="text-sm font-medium text-gray-800">Price: ${{ listings.starting_bid.placed_bid }}</span>
+                    <a href="{% url 'display' listings.id %}"
+                       class="text-sm bg-black text-white px-3 py-1 rounded hover:bg-gray-800 transition">
+                        View
+                    </a>
+                </div>
+
+                <!-- Remove from Watchlist Button -->
+                <form action="{% url 'remove' list_id=listings.id %}" method="post" class="mt-2">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="w-full bg-red-600 text-white text-sm py-1 rounded hover:bg-red-700 transition">
+                        Remove
+                    </button>
+                </form>
+            </div>
+        </div>
     {% endfor %}
 </div>
-
-
-
-
-
-
 
 {% endblock %}

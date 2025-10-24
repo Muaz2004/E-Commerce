@@ -1,44 +1,52 @@
-
 {% extends "auctions/layout.html" %}
-
-{% block title %}{% endblock %}
-
+{% block title %}Create Listing{% endblock %}
 {% block body %}
 
-{% if message %}{{message}}{% endif %}
-<form action="{% url 'add' %}" method="post" >
-    {% csrf_token %}
+{% if message %}
+  <div class="bg-gray-100 border-l-4 border-black text-gray-700 p-4 mb-4 rounded">
+    {{ message }}
+  </div>
+{% endif %}
 
-    <div class="form-group">
-        <label for="title"><strong>Title</strong></label>
-        <input type="text" name="title" placeholder="title" required class="form-control" >
-    </div>
+<h2 class="text-2xl font-semibold mb-6">Create New Listing</h2>
 
-    <div class="form-group">
-        <label for="description"><strong>Description</strong> </label>
-        <input type="text" name="description" placeholder="description" required class="form-control">
-    </div>
+<form action="{% url 'add' %}" method="post" class="space-y-4 max-w-md">
+  {% csrf_token %}
 
-    <div class="form-group">
-        <label for="startin_bid"><strong>Starting_bid</strong></label>
-        <input type="number" name="starting_bid" placeholder="startin_bid" required class="form-control">
-    </div>
+  <div>
+    <label class="block font-medium mb-1">Title</label>
+    <input type="text" name="title" required placeholder="Enter title"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-black" />
+  </div>
 
-    <div class="form-group">
-        <label for="image_url"><strong>Img_url</strong></label>
-        <input type="url" name="image_url" placeholder="image_url" class="form-control">
-    </div>
-    
-    
-    <label for="cat"><strong>select catagory</strong></label>
-    <select class="form-select" id="cat" name="cat">
-        {% for c in catagory %}
-        <option value="{{c}}">{{c}}</option>
-        {% endfor %}
-    <input class="btn btn-primary" type="submit" value="Submit">
+  <div>
+    <label class="block font-medium mb-1">Description</label>
+    <input type="text" name="description" required placeholder="Enter description"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-black" />
+  </div>
+
+  <div>
+    <label class="block font-medium mb-1">Starting Bid</label>
+    <input type="number" name="starting_bid" required placeholder="Starting bid"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-black" />
+  </div>
+
+  <div>
+    <label class="block font-medium mb-1">Image URL</label>
+    <input type="url" name="image_url" placeholder="https://example.com/image.jpg"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-black" />
+  </div>
+
+  <div>
+    <label class="block font-medium mb-1">Select Category</label>
+    <select name="cat" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-black">
+      {% for c in catagory %}
+        <option value="{{ c }}">{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <input type="submit" value="Submit"
+    class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition" />
 </form>
-
-
-
-
 {% endblock %}

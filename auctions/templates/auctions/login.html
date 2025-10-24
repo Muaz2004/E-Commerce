@@ -1,24 +1,28 @@
 {% extends "auctions/layout.html" %}
-
-{% block title %}{% endblock %}
-
+{% block title %}Login{% endblock %}
 {% block body %}
 
-{% if message %}
+<div class="max-w-sm mx-auto mt-12 p-6 bg-white rounded-xl shadow-md">
+    <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
 
-{{message}}
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="mb-3 p-2 rounded {{ message.tags|yesno:'bg-red-100 text-red-700,bg-green-100 text-green-700' }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
-{% endif %}
-<form action="{% url 'login' %}" method="post">
-    {% csrf_token %}
-
-    <input type="text" name="username" placeholder="username">
-    <input type="password" name="password" placeholder="password">
-    <input class="btn btn-primary" type="submit" value="Login">
-</form>
-
-
-
-
+    <form action="{% url 'login' %}" method="post" class="flex flex-col gap-3">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username"
+               class="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-black w-full">
+        <input type="password" name="password" placeholder="Password"
+               class="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-black w-full">
+        <input type="submit" value="Login"
+               class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition w-full">
+    </form>
+</div>
 
 {% endblock %}

@@ -1,105 +1,96 @@
 {% extends "auctions/layout.html" %}
-
-{% block title %}{% endblock %}
-
+{% block title %}Listing Details{% endblock %}
 {% block body %}
-<div class="container">
-  {% if message %}
-  {% if updated %}
-  <div class="alert alert-success" role="alert">
-    {{message}}
-  </div>
-  
-  {% else %}
-  <div class="alert alert-danger" role="alert">
-    {{message}}
-  </div>
-  
-  {% endif %}
-  {% endif %}
-</div>
 
-{% if not query.is_active and user == winning_bidder %}
-  <div class="alert alert-success" role="alert">
-    Congratulations, you won!
+{% if message %}
+  <div class="mb-4 p-3 rounded {{ updated|yesno:'bg-green-100 text-green-700,bg-red-100 text-red-700' }}">
+    {{ message }}
   </div>
 {% endif %}
 
-
-
-<div class="row mx-3">
-  {% if user.is_authenticated and query.is_active %}
-  {% if isowner %}
-  <form action="{% url 'close' list_id=list_id %}" method="post" style="margin-right: 30px;">
-    {% csrf_token %}
-    <button class="btn btn-danger" type="submit">close</button>
-  </form>
-  {% endif %}
+<div class="flex flex-col lg:flex-row gap-8">
   
-  {% if flag%}
-  <form action="{% url 'remove' list_id=list_id %}" method="post">
-    {% csrf_token %}
-    <button class="btn btn-danger" type="submit">remove from watchlist</button>
-  </form>
-  
-  {% else %}
-  <form action="{% url 'addtw' list_id=list_id %}" method="post">
-    {% csrf_token %}
-    <button class="btn btn-success" type="submit" formnovalidate>add to watchlist</button>
-</form>
+  <!-- Image -->
+  <div class="flex-1 flex justify-center items-start">
+    {% if query.image_url %}
+      <img src="{{ query.image_url }}" alt="image"
+           class="rounded-xl w-full max-w-sm h-60 object-cover shadow-lg">
+    {% else %}
+      <div class="w-full max-w-sm h-60 bg-gray-200 flex items-center justify-center rounded-xl shadow-lg text-gray-500">
+        No Image
+      </div>
+    {% endif %}
+  </div>
 
+  <!-- Listing Info -->
+  <div class="flex-1 flex flex-col gap-4">
+    <h2 class="text-3xl font-bold">{{ query.title }}</h2>
+    <p class="text-gray-700 text-base">{{ query.description }}</p>
+    <p class="text-gray-500">Owner: <strong>{{ query.creator }}</strong></p>
+    <p class="text-gray-500">Status: <strong>{{ query.is_active|yesno:"Active,Closed" }}</strong></p>
+    <p class="text-gray-500">Price: <strong>${{ query.starting_bid.placed_bid }}</strong></p>
 
-  {% endif %}
-  {% endif %}
+    <!-- Buttons -->
+    {% if user.is_authenticated and query.is_active %}
+      <div class="flex flex-wrap gap-3 mt-4">
+        {% if isowner %}
+          <form action="{% url 'close' list_id=list_id %}" method="post">
+            {% csrf_token %}
+            <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
+              Close Auction
+            </button>
+          </form>
+        {% endif %}
 
-</div>
-<div style="margin: 60px;">
- <h2>pokemon:{{query.title}}</h2><br>
+        {% if flag %}
+          <form action="{% url 'remove' list_id=list_id %}" method="post">
+            {% csrf_token %}
+            <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+              Remove from Watchlist
+            </button>
+          </form>
+        {% else %}
+          <form action="{% url 'addtw' list_id=list_id %}" method="post">
+            {% csrf_token %}
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">
+              Add to Watchlist
+            </button>
+          </form>
+        {% endif %}
+      </div>
 
- {% if query.image_url %}
-  <img src="{{ query.image_url }}" alt="image ">
-  {% endif %} <br> <br>
-
- <p>{{query.description}}</p>
- <p>owner:{{query.creator}}</p>
- <h4>intitial price: ${{query.starting_bid}}</h4>
-</div>
-
-<div class="row mx-3">
-  {% if user.is_authenticated %}
-    <!-- Place Bid Form -->
-    <div class="mb-3">
-      <form action="{% url 'pbid' list_id=list_id %}" method="post">
+      <!-- Place Bid -->
+      <form action="{% url 'pbid' list_id=list_id %}" method="post" class="mt-4 flex flex-col gap-2 max-w-xs">
         {% csrf_token %}
-        <input type="number" name="bid" placeholder="Place bid" min="0" class="form-control">
-        <input type="submit" value="Enter" class="btn btn-success mt-2">
-        
-    
+        <input type="number" name="bid" placeholder="Enter bid" min="0"
+               class="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-black w-full">
+        <input type="submit" value="Place Bid"
+               class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition w-full">
       </form>
-    </div>
+    {% endif %}
 
     <!-- Comment Form -->
-    <div class="mb-3">
-      <form action="{% url 'acom' list_id=list_id %}" method="post">
+    {% if user.is_authenticated %}
+      <form action="{% url 'acom' list_id=list_id %}" method="post" class="mt-4 flex flex-col gap-2 max-w-xs">
         {% csrf_token %}
-        <input type="text" name="comment" placeholder="Add comment" class="form-control">
-        <input type="submit" value="Send" class="btn btn-success mt-2">
+        <input type="text" name="comment" placeholder="Add comment"
+               class="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-black w-full">
+        <input type="submit" value="Comment"
+               class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition w-full">
       </form>
-    </div>
-  {% endif %}
+    {% endif %}
+  </div>
 </div>
 
-
-
-
-
-<ul class="list-group">
-{% for c in comment %}
-
-<li class="list-group-item">{{c.comment}} <br> commented by <strong>{{c.commentator}}</strong></li>
-  
-
-{% endfor %}
+<!-- Comments Section -->
+<h3 class="text-2xl font-semibold mt-8 mb-4 border-b pb-2">Comments</h3>
+<ul class="space-y-3">
+  {% for c in comment %}
+    <li class="border border-gray-200 rounded-xl p-3 shadow-sm text-sm hover:shadow-md transition">
+      <p>{{ c.comment }}</p>
+      <span class="text-gray-500">Commented by <strong>{{ c.commentator }}</strong></span>
+    </li>
+  {% endfor %}
 </ul>
 
 {% endblock %}

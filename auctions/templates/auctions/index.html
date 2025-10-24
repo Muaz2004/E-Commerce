@@ -2,6 +2,11 @@
 {% block title %}Active Listings{% endblock %}
 {% block body %}
 
+<!-- Header Message Card -->
+<div class="max-w-4xl mx-auto mb-6 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md text-center text-gray-800 dark:text-gray-100">
+  🔎 Browse all active listings. Find something interesting and place your bids!
+</div>
+
 <h2 class="text-3xl font-bold mb-6 text-center">Active Listings</h2>
 
 <!-- Category Filter Form -->
@@ -44,11 +49,11 @@
             <!-- Card Content -->
             <div class="p-4 flex flex-col flex-1 justify-between">
                 <div>
-                    <h3 class="text-sm font-semibold truncate mb-1">{{ listings.title }}</h3>
-                    <p class="text-xs text-gray-700 truncate mb-2">{{ listings.description }}</p>
+                    <h3 class="text-sm font-semibold truncate mb-1 text-gray-900 dark:text-gray-100">{{ listings.title }}</h3>
+                    <p class="text-xs text-gray-700 dark:text-gray-200 truncate mb-2">{{ listings.description }}</p>
                 </div>
                 <div class="mt-2 flex justify-center items-center">
-                    <span class="text-sm font-medium text-gray-800">Price: ${{ listings.starting_bid.placed_bid }}</span>
+                    <span class="text-sm font-medium text-gray-800 dark:text-gray-100">Price: ${{ listings.starting_bid.placed_bid }}</span>
                     <a href="{% url 'display' listings.id %}"
                        class="text-sm bg-black text-white px-3 py-1 rounded hover:bg-gray-800 transition ml-2">
                         View
@@ -57,6 +62,11 @@
             </div>
         </div>
     {% endfor %}
+</div>
+
+<!-- Footer Message Card -->
+<div class="max-w-4xl mx-auto mt-6 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md text-center text-gray-800 dark:text-gray-100">
+  💡 Tip: Use the category filter to quickly find items you're interested in.
 </div>
 
 {% endblock %}

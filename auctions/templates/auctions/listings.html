@@ -1,0 +1,105 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div class="container">
+  {% if message %}
+  {% if updated %}
+  <div class="alert alert-success" role="alert">
+    {{message}}
+  </div>
+  
+  {% else %}
+  <div class="alert alert-danger" role="alert">
+    {{message}}
+  </div>
+  
+  {% endif %}
+  {% endif %}
+</div>
+
+{% if not query.is_active and user == winning_bidder %}
+  <div class="alert alert-success" role="alert">
+    Congratulations, you won!
+  </div>
+{% endif %}
+
+
+
+<div class="row mx-3">
+  {% if user.is_authenticated and query.is_active %}
+  {% if isowner %}
+  <form action="{% url 'close' list_id=list_id %}" method="post" style="margin-right: 30px;">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">close</button>
+  </form>
+  {% endif %}
+  
+  {% if flag%}
+  <form action="{% url 'remove' list_id=list_id %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">remove from watchlist</button>
+  </form>
+  
+  {% else %}
+  <form action="{% url 'addtw' list_id=list_id %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-success" type="submit" formnovalidate>add to watchlist</button>
+</form>
+
+
+  {% endif %}
+  {% endif %}
+
+</div>
+<div style="margin: 60px;">
+ <h2>pokemon:{{query.title}}</h2><br>
+
+ {% if query.image_url %}
+  <img src="{{ query.image_url }}" alt="image ">
+  {% endif %} <br> <br>
+
+ <p>{{query.description}}</p>
+ <p>owner:{{query.creator}}</p>
+ <h4>intitial price: ${{query.starting_bid}}</h4>
+</div>
+
+<div class="row mx-3">
+  {% if user.is_authenticated %}
+    <!-- Place Bid Form -->
+    <div class="mb-3">
+      <form action="{% url 'pbid' list_id=list_id %}" method="post">
+        {% csrf_token %}
+        <input type="number" name="bid" placeholder="Place bid" min="0" class="form-control">
+        <input type="submit" value="Enter" class="btn btn-success mt-2">
+        
+    
+      </form>
+    </div>
+
+    <!-- Comment Form -->
+    <div class="mb-3">
+      <form action="{% url 'acom' list_id=list_id %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="comment" placeholder="Add comment" class="form-control">
+        <input type="submit" value="Send" class="btn btn-success mt-2">
+      </form>
+    </div>
+  {% endif %}
+</div>
+
+
+
+
+
+<ul class="list-group">
+{% for c in comment %}
+
+<li class="list-group-item">{{c.comment}} <br> commented by <strong>{{c.commentator}}</strong></li>
+  
+
+{% endfor %}
+</ul>
+
+{% endblock %}

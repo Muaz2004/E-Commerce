@@ -1,0 +1,44 @@
+
+{% extends "auctions/layout.html" %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+{% if message %}{{message}}{% endif %}
+<form action="{% url 'add' %}" method="post" >
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="title"><strong>Title</strong></label>
+        <input type="text" name="title" placeholder="title" required class="form-control" >
+    </div>
+
+    <div class="form-group">
+        <label for="description"><strong>Description</strong> </label>
+        <input type="text" name="description" placeholder="description" required class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="startin_bid"><strong>Starting_bid</strong></label>
+        <input type="number" name="starting_bid" placeholder="startin_bid" required class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="image_url"><strong>Img_url</strong></label>
+        <input type="url" name="image_url" placeholder="image_url" class="form-control">
+    </div>
+    
+    
+    <label for="cat"><strong>select catagory</strong></label>
+    <select class="form-select" id="cat" name="cat">
+        {% for c in catagory %}
+        <option value="{{c}}">{{c}}</option>
+        {% endfor %}
+    <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+
+
+
+
+{% endblock %}

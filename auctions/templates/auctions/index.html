@@ -1,0 +1,48 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+<h2>Active listings </h2>
+     <form action="{% url 'cdisplay' %}" method="post">
+        {% csrf_token %}
+        <select class="form-select" id="cat" name="catagory">
+            {% for c in catagory %}
+            <option value="{{c}}">{{c}}</option>
+            {% endfor %}
+            <input class="btn btn-primary btn-sm" type="submit" value="Search">
+
+
+
+     </form>
+    
+    
+    <div class="row" style="display: flex; flex-wrap: wrap; gap: 0px; margin: 20px; justify-content: space-evenly;">
+    
+    {% for listings in query%}
+    
+    <div class="card" style="width: 15rem; height: 30rem;">
+
+        {% if listings.image_url %}<img src="{{ listings.image_url }}" alt="image" style="padding: 50px;">{% endif %}
+        <div class="card-body" style="padding: 50px; padding-top: 0px;">
+            <h5>{{listings.title}}</h5>
+            <p>{{listings.description}}</p>
+            <p><a href="{% url 'display' listings.id %}" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view detail</a></p>
+    
+                </div>
+             
+          </div>
+     
+    {% endfor %}
+</div>
+
+
+
+
+
+
+
+{% endblock %}

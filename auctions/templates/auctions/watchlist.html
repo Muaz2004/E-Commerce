@@ -1,0 +1,39 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+<h2>watchlists</h2>
+     
+    
+    
+    <div class="row" style="margin: 30px;">
+    
+    {% for listings in query%}
+    
+    <div class="card" style="width: 18rem;">
+
+        {% if listings.image_url %}<img src="{{ listings.image_url }}" alt="image" style="padding: 50px;">{% endif %}
+
+        <div class="card-body" style="padding: 50px;">
+            <h5>{{listings.title}}</h5>
+            <p>{{listings.description}}</p>
+            <a href="{% url 'display' listings.id %}">view detail</a>
+    
+                </div>
+             
+          </div>
+     
+    {% endfor %}
+</div>
+
+
+
+
+
+
+
+{% endblock %}

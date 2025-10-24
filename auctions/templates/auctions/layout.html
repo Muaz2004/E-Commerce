@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}listings{% endblock %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<h1>Auctions</h1>
+<div>
+    {% if user.is_authenticated %}
+    Signed in as <strong>{{ user.username }}</strong>
+    {% else %}
+    Not signed in
+    {% endif %}
+</div>
+<ul class="nav">
+    <li class="nav-item"><a href="{% url 'index' %}" class="nav-link">Active Listings</a></li>
+
+    {% if user.is_authenticated %}
+    <li class="nav-item"><a href="{% url 'add' %}" class="nav-link">Create New Listing</a></li>
+    <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>,
+    <li class="nav-item"><a href="{% url 'wdisplay' %}" class="nav-link">watchlist</a></li>
+    {% else %}
+    <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+    {% endif %}
+</ul>
+<div>
+    <hr>
+    {% block body %}
+    {% endblock %}
+</div>
+</body>
+</html>
